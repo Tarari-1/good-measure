@@ -41,16 +41,16 @@ export function Review({ version, onChanged }: { version: number; onChanged: () 
 
   const all: Proposal[] = useMemo(() => [...(data.data?.proposals ?? [])].reverse(), [data.data])
   const groups = {
-    pending: all.filter((p) => p.status === 'pending'),
+    pending: all.filter((p) => p.status === 'pending' || p.status === 'needs_decision'),
     blocked: all.filter((p) => p.status === 'blocked'),
     decided: all.filter((p) => p.status === 'approved' || p.status === 'rejected'),
   }
   const shown = groups[filter]
 
-  const approve = async (id: string) => {
+  const approve = async (id: string, acknowledged: boolean) => {
     setMsg(null)
     try {
-      await api.approve(id, approver.trim())
+      await api.approve(id, approver.trim(), acknowledged)
       setMsg({ tone: 'good', text: `${id} approved and written to the tracker.` })
     } catch (e) {
       setMsg({ tone: 'bad', text: `${id}: ${e instanceof Error ? e.message : 'failed'}` })
@@ -89,7 +89,7 @@ export function Review({ version, onChanged }: { version: number; onChanged: () 
               className="input"
               value={approver}
               onChange={(e) => setApprover(e.target.value)}
-              placeholder="e.g. Jordan Ellery"
+              placeholder="e.g. Demo Approver"
               autoComplete="name"
               maxLength={60}
             />

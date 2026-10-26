@@ -16,7 +16,7 @@ def build_report(rec: dict[str, Any]) -> dict[str, Any]:
         "email_ids": rec.get("email_ids"),
         "email_flags": [f["email_id"] for f in rec.get("email_flags", [])],
         "proposals": [{k: p.get(k) for k in ("id", "email_id", "tracker", "row_id", "field", "amount", "new_value",
-                                             "before", "after", "status")}
+                                             "before", "after", "status", "overspend_flag", "overspend")}
                       | {"blocked_by": [b["defense"] for b in p["blocks"]], "block_reasons": [b["reason"] for b in p["blocks"]],
                          "warnings": [w["type"] for w in p["warnings"]],
                          "checker": (p.get("checker_review") or {}).get("verdict"),

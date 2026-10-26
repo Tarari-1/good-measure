@@ -3,9 +3,9 @@
 It is a plain backend function behind POST /api/proposals/{id}/approve (approver
 name typed in the UI). It is NOT an MCP tool and no agent can reach it.
 
-Approving re-runs every defense against the current tracker data, so a proposal
-that was fine an hour ago but would now overspend (because another change landed
-first) is refused and marked blocked, with the reason.
+Approving re-runs every defense against the current tracker data. Any change that
+takes a line over budget (OVERSPEND, computed now, not when it was proposed) is only
+applied with acknowledged=True; without it the approval is refused with the numbers.
 """
 
 from __future__ import annotations
@@ -25,7 +25,8 @@ def _clean_name(name: str) -> str | None:
     return name if NAME_RE.match(name) else None
 
 
-def approve(proposal_id: str, approver: str, source: EmailSource | None = None) -> dict[str, Any]:
+def approve(proposal_id: str, approver: str, source: EmailSource | None = None,
+            acknowledged: bool = False) -> dict[str, Any]:
     source = source or default_source()
     who = _clean_name(approver)
     if who is None:
@@ -34,8 +35,8 @@ def approve(proposal_id: str, approver: str, source: EmailSource | None = None) 
         p = next((r for r in records if r["id"] == proposal_id), None)
         if p is None:
             return {"ok": False, "code": 404, "reason": f"No proposal {proposal_id}."}
-        if p["status"] != "pending":
-            return {"ok": False, "code": 409, "reason": f"{proposal_id} is {p['status']}, not pending."}
+        if p["status"] not in ("pending", "needs_decision"):
+            return {"ok": False, "code": 409, "reason": f"{proposal_id} is {p['status']}, not waiting for approval."}
         check = proposals.evaluate(p, source)
         if check["blocks"]:
             p.update(status="blocked", blocks=p["blocks"] + [{**b, "reason": "At approval: " + b["reason"]}
@@ -46,6 +47,13 @@ def approve(proposal_id: str, approver: str, source: EmailSource | None = None) 
                         blocks=check["blocks"])
             return {"ok": False, "code": 409, "reason": "Re-validation failed; the proposal is now blocked.",
                     "proposal": dict(p)}
+        if check.get("overspend") and acknowledged is not True:
+            o = check["overspend"]
+            p.update(overspend=o, overspend_flag=True)  # numbers as of now (they can change as other changes land)
+            return {"ok": False, "code": 428, "proposal": dict(p),
+                    "reason": f"OVERSPEND: approving takes {o['line_id']} over budget by ${o['overage']:,.2f} "
+                              f"(${o['unfunded_commitments']:,.2f} of commitments unfunded). Tick the acknowledgement "
+                              "(acknowledged=true) to approve."}
         new_value = check["after"]
         if p["tracker"] == "budget":
             new_value = round(float(new_value), 2)
@@ -55,10 +63,13 @@ def approve(proposal_id: str, approver: str, source: EmailSource | None = None) 
         if not applied["ok"]:
             return {"ok": False, "code": 409, "reason": applied["reason"]}
         p.update(status="approved", decided_by=who, decided_at=store.now_utc(), before=check["before"],
-                 after=new_value, warnings=check["warnings"])
+                 after=new_value, warnings=check["warnings"], overspend=check.get("overspend"),
+                 overspend_flag=bool(check.get("overspend")),
+                 overspend_acknowledged=bool(check.get("overspend")))
         result = dict(p)
     audit.event(run_id=p["run_id"], step="approved_and_applied", name=proposal_id,
-                arguments={"approver": who, "row_id": p["row_id"], "field": p["field"]},
+                arguments={"approver": who, "row_id": p["row_id"], "field": p["field"],
+                           "overspend_acknowledged": bool(check.get("overspend"))},
                 result={"before": check["before"], "after": new_value})
     return {"ok": True, "proposal": result}
 
@@ -71,7 +82,7 @@ def reject(proposal_id: str, approver: str, reason: str | None = None) -> dict[s
         p = next((r for r in records if r["id"] == proposal_id), None)
         if p is None:
             return {"ok": False, "code": 404, "reason": f"No proposal {proposal_id}."}
-        if p["status"] not in ("pending", "blocked"):
+        if p["status"] not in ("pending", "needs_decision", "blocked"):
             return {"ok": False, "code": 409, "reason": f"{proposal_id} is {p['status']}; it cannot be rejected."}
         p.update(status="rejected", decided_by=who, decided_at=store.now_utc(),
                  rejection_reason=(reason or "").strip()[:300] or None)

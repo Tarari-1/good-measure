@@ -2,8 +2,9 @@
 
 A proposal is one cell change: (tracker, row, field, before -> after), the email
 it came from, the supporting quote, and the result of every defense. It is stored
-in data/proposals.json with status "pending" (waiting for a human) or "blocked"
-(a defense stopped it, with the reasons). Nothing here writes to a tracker: only
+in data/proposals.json with status "pending" (waiting for a human), "needs_decision"
+(an over-budget commitment, flagged OVERSPEND) or "blocked" (a defense stopped it, with
+the reasons). Spend that goes over budget is "pending" with an OVERSPEND flag. Nothing here writes to a tracker: only
 backend/approvals.py does, after a named human approves and evaluate() passes again.
 
 The sender is always read from the email itself, never taken from an agent, so an
@@ -31,7 +32,7 @@ def evaluate(p: dict[str, Any], source: EmailSource) -> dict[str, Any]:
     email = _email_or_none(source, p["email_id"])
     if email is None:
         return {"blocks": [defenses.block("grounding", f"Email {p['email_id']} does not exist.")],
-                "warnings": [], "before": None, "after": None, "program": None, "value": None}
+                "warnings": [], "before": None, "after": None, "program": None, "value": None, "overspend": None}
     blocks = defenses.check_untrusted(email, p.get("quote"), p.get("rationale"),
                                       p.get("new_value") if p["field"] == "notes" else None)
     sender = db.person_by_email(email["from_email"])
@@ -54,7 +55,7 @@ def evaluate(p: dict[str, Any], source: EmailSource) -> dict[str, Any]:
         blocks += defenses.check_permission(email["from_email"], sender, program, p["row_id"])
     blocks += rule_blocks
     return {"blocks": blocks, "warnings": warnings, "before": change.get("before"), "after": change.get("after"),
-            "program": program, "value": value, "sender": email["from_email"],
+            "program": program, "value": value, "sender": email["from_email"], "overspend": change.get("overspend"),
             "sender_name": sender["name"] if sender else email["from_name"]}
 
 
@@ -73,11 +74,18 @@ def create(*, tracker: str, run_id: str, email_id: str, row_id: str, field: str,
                                          sum(1 for r in this_run if r.get("email_id") == email_id))
         result = evaluate(p, source)
         blocks = cap_blocks + result["blocks"]
+        overspend = None if blocks else result["overspend"]
+        if blocks:
+            status = "blocked"
+        elif overspend and overspend["kind"] == "commitment":
+            status = "needs_decision"  # an over-budget commitment is a choice, not a fact: held for a decision
+        else:
+            status = "pending"  # includes recorded spend over budget (flagged, never blocked)
         p.update(
             id=store.next_id(records, "PR"),
             program=result["program"], sender=result.get("sender"), sender_name=result.get("sender_name"),
-            before=result["before"], after=result["after"],
-            status="blocked" if blocks else "pending", blocks=blocks, warnings=result["warnings"],
+            before=result["before"], after=result["after"], overspend=overspend, overspend_flag=bool(overspend),
+            status=status, blocks=blocks, warnings=result["warnings"],
             checker_review=None, created_at=store.now_utc(), decided_by=None, decided_at=None,
         )
         if tracker == "workplan" and result["value"] is not None:
@@ -98,7 +106,7 @@ def list_all(status: str | None = None, run_id: str | None = None) -> list[dict[
 def compact(p: dict[str, Any]) -> dict[str, Any]:
     """What an agent sees about a proposal (no quote text, to keep tokens down)."""
     return {k: p.get(k) for k in ("id", "status", "tracker", "email_id", "row_id", "field", "amount", "new_value",
-                                  "before", "after", "overspend_flag", "blocks", "warnings", "sender")}
+                                  "before", "after", "overspend_flag", "overspend", "blocks", "warnings", "sender")}
 
 
 def attach_reviews(reviews: list[dict[str, Any]], run_id: str | None = None) -> dict[str, int]:

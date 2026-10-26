@@ -40,12 +40,16 @@ def test_api_smoke():
         props = c.get("/api/proposals").json()["proposals"]
         by_email = {p["email_id"]: p for p in props}
         assert by_email["e01"]["status"] == "pending"
-        assert by_email["e10"]["blocks"][0]["defense"] == "rules"
+        assert by_email["e10"]["status"] == "pending" and by_email["e10"]["overspend_flag"] is True
+        e10 = by_email["e10"]["id"]
+        no_ack = c.post(f"/api/proposals/{e10}/approve", json={"approver": "Demo Approver"})
+        assert no_ack.status_code == 428 and "acknowledg" in no_ack.json()["detail"]["reason"]
+        assert c.post(f"/api/proposals/{e10}/approve", json={"approver": "Demo Approver", "acknowledged": True}).status_code == 200
         assert by_email["e15"]["blocks"][0]["defense"] == "permission"
 
         pid = by_email["e01"]["id"]
         assert c.post(f"/api/proposals/{pid}/approve", json={"approver": ""}).status_code == 422
-        ok = c.post(f"/api/proposals/{pid}/approve", json={"approver": "Jordan Ellery"})
+        ok = c.post(f"/api/proposals/{pid}/approve", json={"approver": "Demo Approver"})
         assert ok.status_code == 200
         line = next(l for l in c.get("/api/trackers/budget").json()["lines"] if l["line_id"] == "READ-02")
         assert line["spent_to_date"] == 4090.5 and line["changed_fields"] == ["spent_to_date"]

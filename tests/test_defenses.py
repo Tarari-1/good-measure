@@ -118,18 +118,41 @@ def test_own_team_is_allowed():
 # --- 4. rules -----------------------------------------------------------------------
 
 
-def test_overspend_without_flag_is_blocked():
+def test_actual_spend_over_budget_is_recorded_with_overspend_flag():
+    # e10: $2,850 already paid. 4,300 + 2,850 = 7,150 spent, + 900 committed = 8,050 > 8,000 budget.
     p = budget("e10", "FAM-01", "spent_to_date", 2850, "came in at $2,850 and I paid it on Friday")
-    assert defenses_of(p) == {"rules"} and "OVERSPEND" in p["blocks"][0]["reason"]
+    assert p["status"] == "pending" and p["blocks"] == []  # money already spent is never blocked
+    o = p["overspend"]
+    assert p["overspend_flag"] is True and o["kind"] == "spend"
+    assert (o["overage"], o["new_remaining"], o["unfunded_commitments"], o["spent_over_budget"]) == (50.0, -50.0, 50.0, 0.0)
+    assert "over budget by $50.00" in o["consequence"] and "$50.00 of existing commitments are now unfunded" in o["consequence"]
+    assert any(w["type"] == "overspend" for w in p["warnings"])
 
 
-def test_overspend_flag_needs_the_email_to_say_so():
-    p = budget("e10", "FAM-01", "spent_to_date", 2850, "came in at $2,850 and I paid it on Friday", flag=True)
-    assert "rules" in defenses_of(p)
+def test_spend_far_over_budget_still_recorded():
     line = db.budget_line("FAM-01")
-    e = {"id": "x", "body": "Catering was $2,850; I know this puts us over budget.", "subject": ""}
-    blocks, warnings, _ = defenses.check_budget_rules(line, "spent_to_date", 2850, True, e, "FAM-01")
-    assert not blocks and warnings[0]["type"] == "overspend"
+    e = {"id": "x", "subject": "", "body": "Catering for three nights: $9,000 paid."}
+    blocks, warnings, change = defenses.check_budget_rules(line, "spent_to_date", 9000, False, e, "FAM-01")
+    assert not blocks
+    o = change["overspend"]
+    assert o["spent_over_budget"] == 5300.0 and o["overage"] == 6200.0 and o["unfunded_commitments"] == 900.0
+
+
+def test_new_commitment_over_budget_needs_a_decision():
+    line = db.budget_line("FAM-01")  # 4,300 spent + 900 committed of 8,000
+    e = {"id": "x", "subject": "", "body": "We booked catering: $3,000 committed."}
+    blocks, _, change = defenses.check_budget_rules(line, "committed", 3000, False, e, "FAM-01")
+    assert not blocks and change["overspend"]["kind"] == "commitment" and change["overspend"]["overage"] == 200.0
+
+
+def test_overspend_approval_requires_acknowledgement():
+    p = budget("e10", "FAM-01", "spent_to_date", 2850, "came in at $2,850 and I paid it on Friday")
+    refused = approvals.approve(p["id"], "Demo Approver")
+    assert refused["ok"] is False and refused["code"] == 428 and "acknowledg" in refused["reason"]
+    assert db.budget_line("FAM-01")["spent_to_date"] == 4300  # nothing written
+    ok = approvals.approve(p["id"], "Demo Approver", acknowledged=True)
+    assert ok["ok"] and ok["proposal"]["overspend_acknowledged"] is True
+    assert db.budget_line("FAM-01")["spent_to_date"] == 7150
 
 
 def test_dependency_conflict_is_flagged():
@@ -165,28 +188,32 @@ def test_per_email_cap():
 def test_approval_applies_and_logs_change():
     p = budget("e13", "TEEN-02", "spent_to_date", 780, "I paid the print deposit for the student chapbook today: $780")
     assert approvals.approve(p["id"], "")["code"] == 422
-    res = approvals.approve(p["id"], "Jordan Ellery")
+    res = approvals.approve(p["id"], "Demo Approver")
     assert res["ok"], res
     assert db.budget_line("TEEN-02")["spent_to_date"] == 780.0
     assert db.change_log()[-1]["proposal_id"] == p["id"]
-    assert approvals.approve(p["id"], "Jordan Ellery")["code"] == 409  # not pending any more
+    assert approvals.approve(p["id"], "Demo Approver")["code"] == 409  # not pending any more
 
 
 def test_approval_revalidates_against_current_data():
-    # Two proposals each fit the TEEN-02 budget (3200) alone, but not together.
+    # Fine when proposed, but another change lands first: at approval it would overspend,
+    # so the overspend check (computed now) requires an acknowledgement.
     quote = "I paid the print deposit for the student chapbook today: $780"
     first = budget("e13", "TEEN-02", "spent_to_date", 780, quote)
-    with_db_change = db.connect_rw()
-    with_db_change.execute("UPDATE budget_lines SET spent_to_date = 2600 WHERE line_id = 'TEEN-02'")
-    with_db_change.close()
-    res = approvals.approve(first["id"], "Jordan Ellery")
-    assert not res["ok"] and res["proposal"]["status"] == "blocked"
+    assert first["overspend_flag"] is False
+    conn = db.connect_rw()
+    conn.execute("UPDATE budget_lines SET spent_to_date = 2600 WHERE line_id = 'TEEN-02'")
+    conn.close()
+    res = approvals.approve(first["id"], "Demo Approver")
+    assert not res["ok"] and res["code"] == 428 and res["proposal"]["overspend"]["overage"] == 180.0
     assert db.budget_line("TEEN-02")["spent_to_date"] == 2600
+    assert approvals.approve(first["id"], "Demo Approver", acknowledged=True)["ok"]
+    assert db.budget_line("TEEN-02")["spent_to_date"] == 3380
 
 
 def test_reject_never_writes():
     p = budget("e13", "TEEN-02", "spent_to_date", 780, "I paid the print deposit for the student chapbook today: $780")
-    assert approvals.reject(p["id"], "Jordan Ellery", "duplicate")["ok"]
+    assert approvals.reject(p["id"], "Demo Approver", "duplicate")["ok"]
     assert db.budget_line("TEEN-02")["spent_to_date"] == 0
 
 

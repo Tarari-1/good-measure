@@ -1,0 +1,40 @@
+{
+  "tester": "the author, who held this role at a nonprofit; single self-test, not an independent pilot",
+  "emails": [
+    "e01",
+    "e05",
+    "e02",
+    "e14",
+    "e07",
+    "e03",
+    "e16",
+    "e10"
+  ],
+  "manual_minutes": 9,
+  "app_minutes": 2.5,
+  "speedup": "about 3.6x (72% less time)",
+  "quotes_verbatim": [
+    "it was very boring and it was very manual and I did not want to do it",
+    "in real life scenarios doing this job, I would have had to do it for like tens or dozens of line items in one go",
+    "I would likely have gotten bored and gone to do something else or stopped working entirely, which would have led me to not meet the deadline for when these updates would have needed to be posted",
+    "it was over three times faster than doing it manually"
+  ],
+  "caveats": [
+    "emails were clearer and neater than real life, where information is scattered across many emails; real manual time would be longer",
+    "n=1 self-test"
+  ],
+  "finding": "The app's overspend rule blocked an already-incurred catering expense of $2,000+ on an $8,000 line. The tester judged this wrong: money already spent must be recorded; the app should record it, flag the line overspent, show the shortfall and flag the unfunded commitments left. This was implemented in Stage 2d.",
+  "app_timing_note": {
+    "label": "ESTIMATE, not measured in the self-test",
+    "why": "The timed app test probably ran with the no-model stand-in, so the 2.5 minutes excludes real model time.",
+    "last_full_run": {
+      "run_id": "025bfb7aad9d",
+      "emails": 20,
+      "emails_reaching_a_model": 15,
+      "wall_clock_seconds": 64.7
+    },
+    "estimate_for_8_test_emails_seconds": 30.2,
+    "assumption": "Model time scales in proportion to the number of emails that reach a model. Of the 8 test emails, 7 reach a model (e16 is skipped by the pre-filter), so the estimate is 64.7 s x 7/15 = 30.2 s. This ignores the fixed per-run work of the Coordinator, Checker and Chaser, which does not shrink with fewer emails, so the real figure is likely somewhat higher."
+  },
+  "app_minutes_with_model_estimate": 3.0
+}

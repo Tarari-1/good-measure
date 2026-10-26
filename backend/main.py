@@ -81,6 +81,7 @@ class RunBody(BaseModel):
 class DecisionBody(BaseModel):
     model_config = ConfigDict(extra="forbid")
     approver: str = Field(max_length=80)
+    acknowledged: StrictBool = False  # required (true) to approve an OVERSPEND-flagged change
     reason: str | None = Field(default=None, max_length=300)
 
 
@@ -267,7 +268,7 @@ def run_events(run_id: str = PathParam(pattern=RUN_ID), after: int = Query(0, ge
 
 
 @app.get("/api/proposals")
-def list_proposals(status: str | None = Query(None, pattern=r"^(pending|blocked|approved|rejected)$"),
+def list_proposals(status: str | None = Query(None, pattern=r"^(pending|needs_decision|blocked|approved|rejected)$"),
                    run_id: str | None = Query(None, pattern=RUN_ID)) -> dict[str, Any]:
     rows = proposals.list_all(status=status, run_id=run_id)
     src = default_source()
@@ -287,7 +288,7 @@ def list_proposals(status: str | None = Query(None, pattern=r"^(pending|blocked|
 @app.post("/api/proposals/{proposal_id}/approve")
 async def approve(body: DecisionBody, proposal_id: str = PathParam(pattern=PROPOSAL_ID)) -> dict[str, Any]:
     async with _lock:
-        res = approvals.approve(proposal_id, body.approver)
+        res = approvals.approve(proposal_id, body.approver, acknowledged=body.acknowledged)
     if not res["ok"]:
         raise HTTPException(status_code=res["code"], detail={"reason": res["reason"], "proposal": res.get("proposal")})
     return res
@@ -369,8 +370,9 @@ DEFENSE_DETAILS = {
     "grounding": "The quote must be copied from the email, every number and date written must appear in it, and a "
                  "new due date needs the email to say the deadline moves.",
     "permission": "The sender (read from the email, not from the agent) may only change their own program's rows.",
-    "rules": "Allowed fields and values only; spend only to a line the email's expense matches; no overspend "
-             "without an explicit flag the email supports; dependency conflicts flagged.",
+    "rules": "Allowed fields and values only; spend only to a line the email's expense matches. Overspend is "
+             "flagged, never blocked: spend over budget is recorded with an OVERSPEND flag, an over-budget "
+             "commitment needs a decision, and approving either needs an explicit acknowledgement.",
     "caps": "Only selected emails; max proposals per email and per run; shared request/token caps and timeouts.",
 }
 

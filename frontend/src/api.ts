@@ -64,7 +64,19 @@ export interface Warning {
   type: string
   message: string
 }
-export type ProposalStatus = 'pending' | 'blocked' | 'approved' | 'rejected'
+export type ProposalStatus = 'pending' | 'needs_decision' | 'blocked' | 'approved' | 'rejected'
+export interface Overspend {
+  line_id: string
+  kind: 'spend' | 'commitment'
+  budget: number
+  spent_after: number
+  committed_after: number
+  overage: number
+  spent_over_budget: number
+  new_remaining: number
+  unfunded_commitments: number
+  consequence: string
+}
 export type CellValue = string | number | null
 
 export interface Proposal {
@@ -82,6 +94,8 @@ export interface Proposal {
   quote: string
   rationale: string
   overspend_flag: boolean
+  overspend?: Overspend | null
+  overspend_acknowledged?: boolean
   program: string | null
   sender: string | null
   sender_name: string | null
@@ -351,7 +365,8 @@ export const api = {
   events: (id: string, after = 0) =>
     request<{ events: RunEvent[]; next: number; total: number }>(`/api/runs/${id}/events?after=${after}`),
   proposals: () => request<ProposalList>('/api/proposals'),
-  approve: (id: string, approver: string) => post<{ ok: true; proposal: Proposal }>(`/api/proposals/${id}/approve`, { approver }),
+  approve: (id: string, approver: string, acknowledged = false) =>
+    post<{ ok: true; proposal: Proposal }>(`/api/proposals/${id}/approve`, { approver, acknowledged }),
   reject: (id: string, approver: string, reason?: string) =>
     post<{ ok: true; proposal: Proposal }>(`/api/proposals/${id}/reject`, { approver, reason: reason || null }),
   budget: () => request<{ lines: BudgetLine[]; programs: Program[]; today: string }>('/api/trackers/budget'),

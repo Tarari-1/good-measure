@@ -148,15 +148,16 @@ def propose_budget_change(email_id: str, line_id: str, field: str, amount: float
     field: "spent_to_date" (money paid) or "committed" (money promised, not paid yet).
     amount: the amount to ADD, exactly as written in the email (negative only to release a commitment).
     quote: the exact sentence from the email that supports this change.
-    overspend_flag: true only if the email itself says this goes over budget.
-    Returns {"proposal_id", "status": "pending"|"blocked", "blocks", "warnings", "before", "after"}.
-    A human must approve a pending proposal before anything changes.
+    overspend_flag: ignored (kept for compatibility). Code flags OVERSPEND itself: spend already made is
+      recorded even if it takes the line over budget; an over-budget commitment is held as needs_decision.
+    Returns {"proposal_id", "status": "pending"|"needs_decision"|"blocked", "blocks", "warnings", "before",
+    "after", "overspend"}. A human must approve before anything changes.
     """
     p = proposals.create(tracker="budget", run_id=RUN_ID, email_id=email_id, row_id=line_id, field=field,
                          amount=amount, quote=quote, rationale=rationale, overspend_flag=overspend_flag,
                          source=SOURCE, selected_ids=SELECTED)
     return {"proposal_id": p["id"], "status": p["status"], "blocks": p["blocks"], "warnings": p["warnings"],
-            "before": p["before"], "after": p["after"]}
+            "before": p["before"], "after": p["after"], "overspend": p.get("overspend")}
 
 
 def propose_activity_change(email_id: str, activity_id: str, field: str, new_value: str, quote: str,

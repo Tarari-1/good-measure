@@ -65,7 +65,7 @@ export default function App() {
   useEffect(() => {
     api
       .proposals()
-      .then((p) => setPending(p.proposals.filter((x) => x.status === 'pending').length))
+      .then((p) => setPending(p.proposals.filter((x) => x.status === 'pending' || x.status === 'needs_decision').length))
       .catch(() => setPending(0))
   }, [version])
 

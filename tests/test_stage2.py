@@ -66,8 +66,21 @@ def test_score_run_on_run1():
     spec.loader.exec_module(mod)
     report = json.loads((ROOT / "tests" / "fixtures" / "run1_before_fix.json").read_text())
     s = mod.score(report)
-    assert (s["precision"], s["recall"], s["exact_match"], s["false_actions"]) == (0.857, 1.0, 18, 2)
-    assert set(s["wrong_emails"]) == {"e04", "e20"}
+    # Answer key since Stage 2d: e10 must be PROPOSED with an OVERSPEND flag (run1 blocked it, so it is missed).
+    assert (s["precision"], s["recall"], s["exact_match"], s["false_actions"]) == (0.857, 0.923, 17, 2)
+    assert set(s["wrong_emails"]) == {"e04", "e10", "e20"}
+
+
+def test_score_requires_overspend_flag_on_e10():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("score_run", ROOT / "scripts" / "score_run.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    base = {"email_ids": ["e10"], "email_flags": []}
+    p = {"id": "PR-1", "email_id": "e10", "tracker": "budget", "row_id": "FAM-01", "field": "spent_to_date",
+         "amount": 2850, "status": "pending", "blocked_by": []}
+    assert mod.score({**base, "proposals": [{**p, "overspend_flag": True}]})["exact_match"] == 1
+    assert mod.score({**base, "proposals": [{**p, "overspend_flag": False}]})["false_actions"] == 1
 
 
 # --- read-only IMAP with a mocked imaplib ------------------------------------------------

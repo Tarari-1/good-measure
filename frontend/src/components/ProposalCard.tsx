@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import type { DefenseKey, Proposal } from '../api'
-import { DEFENSE_HELP, FIELD_LABELS, cellText, dateLabel, highlightQuote } from '../lib/format'
+import { DEFENSE_HELP, FIELD_LABELS, cellText, dateLabel, highlightQuote, money } from '../lib/format'
 
 interface Props {
   p: Proposal
   defenses: Record<DefenseKey, string>
   approver: string
-  onApprove?: (id: string) => Promise<void>
+  onApprove?: (id: string, acknowledged: boolean) => Promise<void>
   onReject?: (id: string, reason: string) => Promise<void>
 }
 
 const STATUS_TEXT: Record<Proposal['status'], string> = {
   pending: 'Waiting for approval',
+  needs_decision: 'Needs decision',
   blocked: 'Blocked',
   approved: 'Approved and applied',
   rejected: 'Rejected',
@@ -22,6 +23,9 @@ export function ProposalCard({ p, defenses, approver, onApprove, onReject }: Pro
   const [rejecting, setRejecting] = useState(false)
   const [reason, setReason] = useState('')
   const [showEmail, setShowEmail] = useState(p.status !== 'approved' && p.status !== 'rejected')
+  const [ack, setAck] = useState(false)
+  const o = p.overspend ?? null
+  const waiting = p.status === 'pending' || p.status === 'needs_decision'
   const field = FIELD_LABELS[p.field] ?? p.field
   const noName = approver.trim().length < 2
   const segments = p.email ? highlightQuote(p.email.body, p.quote) : []
@@ -70,6 +74,34 @@ export function ProposalCard({ p, defenses, approver, onApprove, onReject }: Pro
           </div>
         )}
       </div>
+
+      {o && (
+        <section className={`overbudget ${o.kind}`} aria-label="Over budget">
+          <p className="overbudget-title">
+            <span aria-hidden="true">▲</span> Over budget{o.kind === 'commitment' ? ' — needs a decision' : ' — spend is recorded, not rejected'}
+          </p>
+          <dl className="overbudget-grid">
+            <div><dt>Line</dt><dd className="mono">{o.line_id}</dd></div>
+            <div><dt>Budget</dt><dd>{money(o.budget)}</dd></div>
+            <div><dt>Spent after</dt><dd>{money(o.spent_after)}</dd></div>
+            <div><dt>Committed</dt><dd>{money(o.committed_after)}</dd></div>
+            <div><dt>Over by</dt><dd className="neg">{money(o.overage)}</dd></div>
+            <div><dt>Remaining</dt><dd className={o.new_remaining < 0 ? 'neg' : ''}>{money(o.new_remaining)}</dd></div>
+            <div><dt>Unfunded commitments</dt><dd className={o.unfunded_commitments > 0 ? 'neg' : ''}>{money(o.unfunded_commitments)}</dd></div>
+          </dl>
+          <p className="overbudget-consequence">{o.consequence}</p>
+          {waiting && onApprove && (
+            <label className="check ack">
+              <input type="checkbox" checked={ack} onChange={(e) => setAck(e.target.checked)} />
+              <span>
+                I understand {o.line_id} will be {money(o.overage)} over budget
+                {o.unfunded_commitments > 0 ? ` and ${money(o.unfunded_commitments)} of commitments will be unfunded` : ''}.
+              </span>
+            </label>
+          )}
+          {p.overspend_acknowledged && <p className="small">Overspend acknowledged by {p.decided_by}.</p>}
+        </section>
+      )}
 
       {p.blocks.length > 0 && (
         <div className="defense-list" role="note">
@@ -128,7 +160,7 @@ export function ProposalCard({ p, defenses, approver, onApprove, onReject }: Pro
         )}
       </div>
 
-      {p.status === 'pending' && onApprove && onReject && (
+      {waiting && onApprove && onReject && (
         <footer className="card-actions">
           {rejecting ? (
             <>
@@ -152,13 +184,14 @@ export function ProposalCard({ p, defenses, approver, onApprove, onReject }: Pro
             </>
           ) : (
             <>
-              <button type="button" className="btn primary" disabled={busy || noName} onClick={() => void act(() => onApprove(p.id))}>
+              <button type="button" className="btn primary" disabled={busy || noName || (o !== null && !ack)} onClick={() => void act(() => onApprove(p.id, ack))}>
                 {busy ? 'Applying…' : 'Approve and apply'}
               </button>
               <button type="button" className="btn ghost" disabled={busy || noName} onClick={() => setRejecting(true)}>
                 Reject
               </button>
               {noName && <span className="muted small">Type your name above to approve or reject.</span>}
+              {!noName && o !== null && !ack && <span className="muted small">Tick the over-budget acknowledgement to approve.</span>}
             </>
           )}
         </footer>

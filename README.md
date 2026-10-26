@@ -38,7 +38,7 @@ Everything runs on synthetic data for a fictional nonprofit, the **Bright Future
 | 1 | Untrusted email | Email text reaches agents only inside `<<<UNTRUSTED_EMAIL …>>>` delimiters (fake delimiters inside an email are removed). Emails containing instructions aimed at an AI are quarantined: any proposal from them is blocked. A canary in the agent instructions blocks any proposal or draft that leaks them. |
 | 2 | Grounding | The quote must appear in the email, and every number and date the proposal would write must appear in the email (`$1,240.50` matches `1240.5`; ids like `WP-02` and `LOB-2291` do not count as numbers). A new due date also needs a sentence saying the deadline moves ("slips to", "is moving"): a booked event date is not a due date. |
 | 3 | Permission | The sender (read from the email, never from the agent) may only change rows of their own program. Unknown senders change nothing. |
-| 4 | Rules | Only `spent_to_date`/`committed` (budget) and `status`/`percent_complete`/`due_date`/`notes` (work plan) can change; values are validated. Spend is only booked to a line whose keywords (e.g. "books", "catering") appear in the email. Spend that pushes spent + committed over the annual budget is blocked unless the proposal has the OVERSPEND flag **and** the email itself says it goes over budget. Dependency conflicts are flagged for the approver. |
+| 4 | Rules & overspend flags | Only `spent_to_date`/`committed` (budget) and `status`/`percent_complete`/`due_date`/`notes` (work plan) can change; values are validated. Spend is only booked to a line whose keywords (e.g. "books", "catering") appear in the email. **Overspend is flagged, never blocked:** money already spent is recorded even if it takes a line over budget, with an automatic OVERSPEND flag and the overage, new remaining and now-unfunded commitments; a new commitment that goes over budget is held as "needs decision". Approving any OVERSPEND change needs an explicit acknowledgement (checkbox in Review, `acknowledged=true` enforced by the backend). Dependency conflicts are flagged for the approver. |
 | 5 | Run caps | Only emails selected for the run; max proposals per email and per run; max emails per run; shared request, tool-call and token limits, and per-agent and per-run timeouts (`config/settings.py`). Loop protection refuses repeated identical tool calls and repeat delegations. |
 
 Every block is stored on the proposal with its reason, shown in the Review and Safety tabs, and written to the append-only audit trail (`output/audit_trail.json`, secrets redacted).
@@ -156,6 +156,8 @@ It prints precision, recall, F1, exact-match emails and **false actions** (chang
 | run1 (before fixes) | 0.857 | 1.000 | 18/20 | 2 (e04 picnic on tutor stipends; e20 event date as due date) |
 | A (after fixes, all cost measures on) | 1.000 | 1.000 | 20/20 | 0 |
 | B (after fixes, main cost measures off) | 1.000 | 0.833 | 18/20 | 0 (missed e07 and e11 date changes) |
+
+**Answer key update (Stage 2d):** overspend is now flagged, not blocked, so the key expects e10 ($2,850 catering, already paid) to be *proposed* with an OVERSPEND flag that the approver must acknowledge. Scored against the new key: run1 0.857 / 0.923 / 17/20 / 2 false actions; the final run A3 (`output/final_run_A3.json`) 1.000 precision, 0.923 recall, 19/20 exact, 0 false actions (it proposed e09's "complete" status but missed its "100%"). Full numbers: `output/cost_experiment.json`.
 
 ## Cost measures
 

@@ -15,10 +15,11 @@ proposal. A Warning is shown to the approver but does not stop it.
                       moves (a booking or event date is not a due date).
   3. permission       The sender may only change rows owned by their own program.
   4. rules            Allowed fields and values only; spend is only booked to a
-                      line the email's expense matches (line keywords); spend may not push
-                      spent + committed over the annual budget unless the email
-                      itself says so and the proposal carries the OVERSPEND flag;
-                      dependency conflicts are flagged.
+                      line the email's expense matches (line keywords). Overspend is
+                      flagged, never blocked: spend over budget is recorded with an
+                      OVERSPEND flag, a commitment over budget is held as "needs
+                      decision", and approving either needs an explicit
+                      acknowledgement. Dependency conflicts are flagged.
   5. caps             Only emails selected for this run; at most N proposals per
                       email and per run (model request/token/time caps live in
                       backend/agents.py and are enforced by PydanticAI).
@@ -38,7 +39,7 @@ DEFENSES = {
     "untrusted_email": "1 · Untrusted email",
     "grounding": "2 · Grounding",
     "permission": "3 · Permission",
-    "rules": "4 · Rules",
+    "rules": "4 · Rules & overspend flags",
     "caps": "5 · Run caps",
 }
 
@@ -245,12 +246,35 @@ def expense_matches_line(line: dict[str, Any], email: dict[str, Any]) -> bool:
     return any(re.search(rf"(?<![\w-]){re.escape(t)}", text, re.I) for t in terms)
 
 
-_OVERSPEND_ACK = re.compile(r"\b(over ?budget|overspen[dt]|over the budget|exceed(s|ed|ing)? (the |our )?budget)\b", re.I)
+def overspend_details(line_id: str, budget: Decimal, spent: Decimal, committed: Decimal, field: str) -> dict[str, Any]:
+    """The numbers an approver needs when spent + committed goes over the line's budget."""
+    overage = spent + committed - budget  # how far the line is over, counting commitments
+    unfunded = min(committed, max(overage, Decimal(0)))  # commitments no longer covered by budget
+    kind = "spend" if field == "spent_to_date" else "commitment"
+    d = {
+        "line_id": line_id, "kind": kind, "budget": float(budget), "spent_after": float(spent),
+        "committed_after": float(committed), "overage": float(overage),
+        "spent_over_budget": float(max(spent - budget, Decimal(0))),
+        "new_remaining": float(budget - spent - committed), "unfunded_commitments": float(unfunded),
+    }
+    if kind == "spend":
+        d["consequence"] = (f"Approving records this spend (money already spent). {line_id} is then over budget by "
+                            f"${overage:,.2f}; ${unfunded:,.2f} of existing commitments are now unfunded.")
+    else:
+        d["consequence"] = (f"Approving adds this commitment. {line_id} is then over budget by ${overage:,.2f}; "
+                            f"${unfunded:,.2f} of commitments are unfunded unless budget is moved.")
+    return d
 
 
 def check_budget_rules(line: dict[str, Any] | None, field: str, amount: Any, overspend_flag: bool,
                        email: dict[str, Any], line_id: str) -> tuple[list[Block], list[Warning], dict[str, Any]]:
-    """Returns (blocks, warnings, {"before", "after"})."""
+    """Returns (blocks, warnings, {"before", "after", "overspend"}).
+
+    Overspend is never blocked. Money already spent is a fact and is recorded; a spend or
+    commitment that takes spent + committed over budget gets an automatic OVERSPEND flag
+    and the computed numbers ("overspend"), and approving it needs an explicit
+    acknowledgement (backend/approvals.py). overspend_flag from the agent is ignored.
+    """
     if line is None:
         return [block("rules", f"Budget line {line_id} does not exist.")], [], {}
     if field not in BUDGET_FIELDS:
@@ -267,27 +291,20 @@ def check_budget_rules(line: dict[str, Any] | None, field: str, amount: Any, ove
                                f"({line['category']}); the email never mentions {terms or 'what this line is for'}.")], [], {}
     before = Decimal(str(line[field]))
     after = before + delta
-    change = {"before": float(before), "after": float(after)}
+    change: dict[str, Any] = {"before": float(before), "after": float(after), "overspend": None}
     if after < 0:
         return [block("rules", f"{line_id}.{field} would become negative ({after}).")], [], change
     spent = after if field == "spent_to_date" else Decimal(str(line["spent_to_date"]))
     committed = after if field == "committed" else Decimal(str(line["committed"]))
     budget = Decimal(str(line["annual_budget"]))
-    blocks: list[Block] = []
     warnings: list[Warning] = []
     if delta > 0 and spent + committed > budget:
-        over = spent + committed - budget
-        if not overspend_flag:
-            blocks.append(block("rules", f"Spent + committed on {line_id} would be {spent + committed:,.2f}, "
-                                         f"{over:,.2f} over the {budget:,.2f} budget, and the proposal has no "
-                                         "OVERSPEND flag."))
-        elif not _OVERSPEND_ACK.search(email.get("body", "")):
-            blocks.append(block("rules", "The OVERSPEND flag is set but the email never says the spend goes over budget."))
-        else:
-            warnings.append(warn("overspend", f"OVERSPEND: {line_id} goes {over:,.2f} over its {budget:,.2f} budget."))
-    elif overspend_flag:
-        warnings.append(warn("flag_unneeded", "OVERSPEND flag set although the line stays within budget."))
-    return blocks, warnings, change
+        change["overspend"] = overspend_details(line_id, budget, spent, committed, field)
+        what = "recorded spend" if field == "spent_to_date" else "new commitment (needs a decision)"
+        warnings.append(warn("overspend", f"OVERSPEND ({what}): {line_id} goes "
+                                          f"{spent + committed - budget:,.2f} over its {budget:,.2f} budget; "
+                                          "approving needs an explicit acknowledgement."))
+    return [], warnings, change
 
 
 def check_activity_rules(act: dict[str, Any] | None, field: str, new_value: Any, all_activities: list[dict[str, Any]],

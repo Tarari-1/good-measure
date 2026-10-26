@@ -1,5 +1,5 @@
 {
-  "_about": "Answer key for the 20 sample emails (data/mailbox). Used by scripts/score_run.py. propose = exactly these changes should pass the defenses; needs_clarification / not_a_tracker_update = no change should pass; must_be_blocked = no change should pass, and any proposal must be blocked by `defense`; quarantine = email flagged by defense 1 and no change passes.",
+  "_about": "Answer key for the 20 sample emails (data/mailbox). Used by scripts/score_run.py. propose = exactly these changes should pass the defenses; needs_clarification / not_a_tracker_update = no change should pass; must_be_blocked = no change should pass, and any proposal must be blocked by `defense`; quarantine = email flagged by defense 1 and no change passes. A change with overspend_flag=true must carry the OVERSPEND flag to count as correct (since Stage 2d, overspend is flagged, not blocked).",
   "emails": {
     "e01": {
       "expected": "propose",
@@ -91,9 +91,18 @@
       "why": "Family Night #2 done, '100% done'."
     },
     "e10": {
-      "expected": "must_be_blocked",
-      "defense": "rules",
-      "why": "$2,850 pushes FAM-01 over budget; email does not acknowledge an overspend."
+      "expected": "propose",
+      "changes": [
+        {
+          "tracker": "budget",
+          "row_id": "FAM-01",
+          "field": "spent_to_date",
+          "amount": 2850,
+          "overspend_flag": true,
+          "requires_acknowledgement": true
+        }
+      ],
+      "why": "$2,850 catering already paid: record it. It takes FAM-01 $50 over budget (spent + committed 8,050 of 8,000), so it must carry the OVERSPEND flag and needs an explicit acknowledgement to approve."
     },
     "e11": {
       "expected": "propose",

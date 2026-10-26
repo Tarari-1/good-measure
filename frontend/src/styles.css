@@ -150,7 +150,7 @@ mark { background: var(--hi); color: inherit; padding: 0 2px; border-radius: 3px
 
 /* proposals */
 .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1rem 1.15rem; box-shadow: var(--shadow); border-left: 5px solid var(--rule); }
-.card.pending { border-left-color: var(--focus); }
+.card.pending, .card.needs_decision { border-left-color: var(--focus); }
 .card.blocked { border-left-color: var(--bad); }
 .card.approved { border-left-color: var(--good); }
 .card.rejected { border-left-color: var(--muted); }
@@ -159,6 +159,7 @@ mark { background: var(--hi); color: inherit; padding: 0 2px; border-radius: 3px
 .card-head h3 { font-size: 1.05rem; margin: 0; }
 .status-pill { font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 999px; white-space: nowrap; }
 .status-pill.pending { background: var(--warn-soft); color: var(--warn); }
+.status-pill.needs_decision { background: #ffe1b3; color: #7a4100; }
 .status-pill.blocked { background: var(--bad-soft); color: var(--bad); }
 .status-pill.approved { background: var(--good-soft); color: var(--good); }
 .status-pill.rejected { background: var(--rule-2); color: var(--ink-2); }
@@ -277,3 +278,13 @@ td.changed { background: var(--hi) !important; box-shadow: inset 0 0 0 1px #e8c9
 tr.current { background: var(--teal-soft); }
 mark + mark { margin-left: 0.4rem; }
 @media (max-width: 1000px) { .paste-form { grid-template-columns: 1fr; } .test-list { columns: 1; } .tabs { grid-template-columns: repeat(4, 1fr); } }
+
+/* stage 2d: over budget */
+.overbudget { background: #fff4dd; border: 2px solid #e6a23c; border-radius: 10px; padding: 0.75rem 0.9rem; margin: 0 0 0.7rem; }
+.overbudget-title { font-weight: 700; color: #7a4100; margin-bottom: 0.4rem; }
+.overbudget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 0.4rem 0.8rem; margin: 0 0 0.5rem; }
+.overbudget-grid dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #7a5a2a; }
+.overbudget-grid dd { margin: 0; font-family: var(--mono); font-size: 0.95rem; font-weight: 600; }
+.overbudget-consequence { margin: 0 0 0.5rem; }
+.check.ack { align-items: flex-start; background: #fff; border: 1px solid #e6a23c; border-radius: 8px; padding: 0.45rem 0.6rem; font-weight: 600; }
+.check.ack input { margin-top: 0.15rem; }

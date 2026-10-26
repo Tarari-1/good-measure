@@ -117,7 +117,7 @@ def tracker_summary(source: EmailSource) -> dict[str, Any]:
             at_risk.append({**a, "risk": a["status"]})
         elif a["due_date"] <= horizon and a["percent_complete"] < 50:
             at_risk.append({**a, "risk": "due within 3 weeks, under 50% done"})
-    pending = [p for p in store.read_all(store.PROPOSALS) if p.get("status") == "pending"]
+    pending = [p for p in store.read_all(store.PROPOSALS) if p.get("status") in ("pending", "needs_decision")]
     return {"today": settings.DEMO_TODAY, "fiscal_year": [settings.FISCAL_YEAR_START, settings.FISCAL_YEAR_END],
             "plan_pct": plan_pct, "programs": programs,
             "totals": {k: sum(p[k] for p in programs) for k in ("annual_budget", "spent_to_date", "committed")},

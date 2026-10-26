@@ -37,9 +37,9 @@ describe('ProposalCard', () => {
     const onApprove = vi.fn().mockResolvedValue(undefined)
     const { rerender } = render(<ProposalCard p={proposal()} defenses={defenses} approver="" onApprove={onApprove} onReject={vi.fn()} />)
     expect(screen.getByRole('button', { name: 'Approve and apply' })).toBeDisabled()
-    rerender(<ProposalCard p={proposal()} defenses={defenses} approver="Jordan Ellery" onApprove={onApprove} onReject={vi.fn()} />)
+    rerender(<ProposalCard p={proposal()} defenses={defenses} approver="Demo Approver" onApprove={onApprove} onReject={vi.fn()} />)
     await userEvent.click(screen.getByRole('button', { name: 'Approve and apply' }))
-    expect(onApprove).toHaveBeenCalledWith('PR-0001')
+    expect(onApprove).toHaveBeenCalledWith('PR-0001', false)
   })
 
   it('shows the defense that blocked a proposal and offers no approve button', () => {
@@ -48,5 +48,23 @@ describe('ProposalCard', () => {
     expect(screen.getByText('3 · Permission')).toBeInTheDocument()
     expect(screen.getByText(/may only change TEEN rows/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Approve and apply' })).toBeNull()
+  })
+
+  it('shows the amber Over budget panel and needs the acknowledgement before approving', async () => {
+    const onApprove = vi.fn().mockResolvedValue(undefined)
+    const p = proposal({ email_id: 'e10', row_id: 'FAM-01', row_label: 'Catering & meals', amount: 2850, before: 4300, after: 7150,
+      overspend_flag: true, warnings: [{ type: 'overspend', message: 'OVERSPEND' }],
+      overspend: { line_id: 'FAM-01', kind: 'spend', budget: 8000, spent_after: 7150, committed_after: 900, overage: 50,
+        spent_over_budget: 0, new_remaining: -50, unfunded_commitments: 50,
+        consequence: 'Approving records this spend (money already spent). FAM-01 is then over budget by $50.00; $50.00 of existing commitments are now unfunded.' } })
+    render(<ProposalCard p={p} defenses={defenses} approver="Demo Approver" onApprove={onApprove} onReject={vi.fn()} />)
+    expect(screen.getByLabelText('Over budget')).toHaveTextContent('spend is recorded, not rejected')
+    expect(screen.getByText(/over budget by \$50.00/)).toBeInTheDocument()
+    const btn = screen.getByRole('button', { name: 'Approve and apply' })
+    expect(btn).toBeDisabled()
+    await userEvent.click(screen.getByRole('checkbox', { name: /I understand FAM-01 will be \$50.00 over budget/ }))
+    expect(btn).toBeEnabled()
+    await userEvent.click(btn)
+    expect(onApprove).toHaveBeenCalledWith('PR-0001', true)
   })
 })
