@@ -285,5 +285,31 @@
     "B": "output/run_B_measures_off.json"
   },
   "previous_final_run": "output/final_run_A2.json (before the Stage 2d overspend change)",
-  "answer_key_note": "Since Stage 2d the key expects e10 to be proposed with an OVERSPEND flag. Runs A1, A2, B1, B2 were scored against the earlier key (e10 must be blocked), where they all scored 20/20; against the new key they miss e10."
+  "answer_key_note": "Since Stage 2d the key expects e10 to be proposed with an OVERSPEND flag. Runs A1, A2, B1, B2 were scored against the earlier key (e10 must be blocked), where they all scored 20/20; against the new key they miss e10.",
+  "latest_run_A4": {
+    "run_id": "b5f747692c58",
+    "requests": 26,
+    "input_tokens": 83435,
+    "cached_input_tokens": 49834,
+    "cache_write_tokens": 26958,
+    "output_tokens": 4779,
+    "cost_usd": 0.00692189,
+    "wall_clock_seconds": 25.6,
+    "score": {
+      "precision": 1.0,
+      "recall": 0.923,
+      "f1": 0.96,
+      "exact_match": 19,
+      "emails": 20,
+      "false_actions": 0,
+      "false_action_list": [],
+      "missed": [
+        "e09: ('WP-11', 'percent_complete', '100')"
+      ],
+      "wrong_emails": [
+        "e09"
+      ]
+    },
+    "report": "output/final_run_A4.json"
+  }
 }
