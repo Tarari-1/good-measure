@@ -239,3 +239,6 @@ Only if you want it. Set `IMAP_HOST`, `IMAP_USER` and `IMAP_APP_PASSWORD` (an ap
 
 Tests use a mocked `imaplib` (`tests/test_stage2.py`).
 
+---
+
+Good Measure is an independent student project, not affiliated with any organization whose visual style inspired its design.

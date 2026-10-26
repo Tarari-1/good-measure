@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api, type EmailFull, type EmailSummary } from '../api'
+import { HowItWorks } from '../components/HeadlineBand'
 import { ImapPanel } from '../components/ImapPanel'
 import { PastePanel } from '../components/PastePanel'
 import { dateLabel } from '../lib/format'
@@ -68,6 +69,7 @@ export function Inbox({ version, running, maxPerRun, imapConfigured = false, onS
 
   return (
     <div className="stack">
+    <HowItWorks />
     <div className="split">
       <section className="panel" aria-labelledby="inbox-h">
         <div className="panel-head">
