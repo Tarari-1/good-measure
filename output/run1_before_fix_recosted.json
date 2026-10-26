@@ -1,0 +1,60 @@
+{
+  "run_id": "fd4018df30ef",
+  "pricing": {
+    "placeholders": false,
+    "source": "course slides (gpt-6-luna)",
+    "input_per_mtok": 0.1,
+    "cached_input_per_mtok": 0.01,
+    "cache_write_per_mtok": 0.125,
+    "output_per_mtok": 0.5,
+    "currency": "USD",
+    "cached_is_subset_of_input": true
+  },
+  "per_agent": {
+    "coordinator": {
+      "requests": 5,
+      "tool_calls": 5,
+      "input_tokens": 9712,
+      "cached_input_tokens": 4103,
+      "output_tokens": 632,
+      "cost_usd": 0.00091793
+    },
+    "intake": {
+      "requests": 13,
+      "tool_calls": 47,
+      "input_tokens": 51227,
+      "cached_input_tokens": 31107,
+      "output_tokens": 2960,
+      "cost_usd": 0.00380307
+    },
+    "checker": {
+      "requests": 3,
+      "tool_calls": 14,
+      "input_tokens": 8990,
+      "cached_input_tokens": 2545,
+      "output_tokens": 952,
+      "cost_usd": 0.00114595
+    },
+    "chaser": {
+      "requests": 3,
+      "tool_calls": 3,
+      "input_tokens": 3336,
+      "cached_input_tokens": 0,
+      "output_tokens": 431,
+      "cost_usd": 0.0005491
+    }
+  },
+  "total": {
+    "requests": 24,
+    "input_tokens": 73265,
+    "cached_input_tokens": 37755,
+    "output_tokens": 4975,
+    "cost_usd": 0.00641605
+  },
+  "note": "run1 did not record cache-write tokens (recording was added in stage 2); cost assumes 0 cache writes, a lower bound.",
+  "sensitivity_if_cache_writes_like_run_A": {
+    "cache_write_share_of_input": 0.361,
+    "cache_write_tokens_est": 26430,
+    "cost_usd": 0.0070768
+  }
+}

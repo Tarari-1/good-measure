@@ -1,0 +1,26 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+*.lock
+*.tmp-*
+node_modules/
+frontend/dist/
+# working state (rebuilt by scripts/reset_db.py --confirm)
+data/proposals.json
+data/nudges.json
+data/selection.json
+data/local_mail/
+data/*.corrupt-*.json
+# local run output; curated evidence files in output/ ARE committed
+output/audit_trail*.json
+output/audit_trail.corrupt-*.json
+output/runs/
+output/*_stderr.txt
+output/live_run_report.json
+data/tracker_working.db
+.claude/

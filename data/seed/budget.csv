@@ -1,0 +1,31 @@
+line_id,program,category,annual_budget,spent_to_date,committed,owner,keywords
+READ-01,READ,Tutor stipends,48000,15200,4000,Priya Lindqvist,stipend
+READ-02,READ,Levelled readers & books,9500,2850,600,Owen Castellano,book|levelled
+READ-03,READ,Classroom supplies,2400,610,0,Owen Castellano,classroom|supplies
+READ-04,READ,Tutor training,3600,1500,0,Priya Lindqvist,training|train
+READ-05,READ,Field trips & transport,4200,900,350,Owen Castellano,trip|transport|bus|museum
+READ-06,READ,Family take-home kits,3000,400,0,Priya Lindqvist,kit|take-home
+LIB-01,LIB,Shelving & furniture,12000,4100,0,Tomas Achterberg,shelving|shelf|shelves|furniture
+LIB-02,LIB,Book processing supplies,1800,520,0,Rhea Mbatha,processing|label|jacket|cover|bindery
+LIB-03,LIB,Craft supplies,1500,610,0,Rhea Mbatha,craft|bookmark
+LIB-04,LIB,Library assistant wages,26000,8400,0,Tomas Achterberg,wage|assistant|payroll
+LIB-05,LIB,Book acquisitions,15000,5200,1800,Rhea Mbatha,acquisition|book order|books for the|new books
+LIB-06,LIB,Pop-up events,3500,900,250,Rhea Mbatha,pop-up|popup|event
+FAM-01,FAM,Catering & meals,8000,4300,900,Felix Brandt-Ito,catering|meal|food|dinner
+FAM-02,FAM,Childcare providers,6500,2100,0,Felix Brandt-Ito,childcare|child care
+FAM-03,FAM,Venue rental,5000,1650,1200,Danielle Okonkwo-Reyes,venue|hall|room rental
+FAM-04,FAM,Family books to keep,7000,2300,0,Danielle Okonkwo-Reyes,books to keep|family books|book
+FAM-05,FAM,Interpreters,4500,1300,0,Danielle Okonkwo-Reyes,interpret
+FAM-06,FAM,Outreach & flyers,1200,380,0,Felix Brandt-Ito,outreach|flyer|poster
+TEEN-01,TEEN,Facilitator fees,18000,5800,2000,Marcus Fairweather,facilitator
+TEEN-02,TEEN,Chapbook printing,3200,0,0,Saoirse Calloway,chapbook|print
+TEEN-03,TEEN,Guest authors,4000,1000,500,Marcus Fairweather,author
+TEEN-04,TEEN,Laptops & software,6000,4200,0,Marcus Fairweather,laptop|software|computer
+TEEN-05,TEEN,Snacks,1400,420,0,Saoirse Calloway,snack
+TEEN-06,TEEN,Showcase event,2500,300,0,Saoirse Calloway,showcase
+ESL-01,ESL,Instructor fees,30000,9600,3000,Hana Velasquez-Moore,instructor|teacher fee
+ESL-02,ESL,Course textbooks,5200,1900,0,Hana Velasquez-Moore,textbook
+ESL-03,ESL,Childcare during class,4800,1500,0,Hana Velasquez-Moore,childcare|child care
+ESL-04,ESL,Transit passes,3600,1150,0,Hana Velasquez-Moore,transit|bus pass|pass
+ESL-05,ESL,Assessment fees,2000,400,0,Hana Velasquez-Moore,assessment|exam|test fee
+ESL-06,ESL,Graduation event,1800,0,0,Hana Velasquez-Moore,graduation

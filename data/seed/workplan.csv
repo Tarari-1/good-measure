@@ -1,0 +1,26 @@
+id,program,activity,owner,due_date,status,percent_complete,notes,depends_on
+WP-01,READ,Recruit and vet fall tutors,Priya Lindqvist,2026-09-15,complete,100,24 tutors cleared,
+WP-02,READ,Tutor training workshop,Owen Castellano,2026-10-20,in_progress,70,,WP-01
+WP-03,READ,Mid-year reading assessments,Owen Castellano,2026-12-12,not_started,0,,WP-02
+WP-04,READ,Family take-home kit assembly,Priya Lindqvist,2026-11-14,in_progress,25,,
+WP-05,READ,Spring tutoring cohort launch,Priya Lindqvist,2027-02-02,not_started,0,,WP-03
+WP-06,LIB,Install shelving at three library corners,Tomas Achterberg,2026-10-30,in_progress,60,,
+WP-07,LIB,Pop-up library: Elm Street,Rhea Mbatha,2026-11-07,not_started,0,,WP-06
+WP-08,LIB,Catalogue donated books,Rhea Mbatha,2026-10-16,in_progress,80,,
+WP-09,LIB,Volunteer reader training,Tomas Achterberg,2026-11-21,not_started,0,,
+WP-10,LIB,Winter reading challenge,Rhea Mbatha,2027-01-10,not_started,0,,WP-08
+WP-11,FAM,Family Literacy Night #2,Felix Brandt-Ito,2026-10-15,in_progress,90,,
+WP-12,FAM,Book venue for Spring Showcase,Danielle Okonkwo-Reyes,2026-11-15,in_progress,30,,
+WP-13,FAM,Print Spring Showcase invitations,Felix Brandt-Ito,2026-11-28,not_started,0,,WP-12
+WP-14,FAM,Interpreter roster for winter,Danielle Okonkwo-Reyes,2026-12-01,not_started,0,,
+WP-15,FAM,Family survey analysis,Danielle Okonkwo-Reyes,2026-10-09,in_progress,40,,
+WP-16,TEEN,Fall workshop series,Saoirse Calloway,2026-12-10,in_progress,40,,
+WP-17,TEEN,Chapbook layout and print,Saoirse Calloway,2026-11-20,not_started,0,,
+WP-18,TEEN,Guest author visits,Marcus Fairweather,2026-11-05,in_progress,50,,
+WP-19,TEEN,Laptop setup for studio,Marcus Fairweather,2026-10-02,complete,100,,
+WP-20,TEEN,Year-end showcase,Saoirse Calloway,2027-05-15,not_started,0,,WP-17
+WP-21,ESL,Fall term enrolment,Hana Velasquez-Moore,2026-09-30,complete,100,61 learners enrolled,
+WP-22,ESL,Mid-term assessments,Hana Velasquez-Moore,2026-10-17,in_progress,50,,
+WP-23,ESL,Transit pass distribution,Hana Velasquez-Moore,2026-10-10,in_progress,70,,
+WP-24,ESL,Winter term curriculum update,Hana Velasquez-Moore,2026-12-15,not_started,0,,WP-22
+WP-25,ESL,Graduation ceremony planning,Hana Velasquez-Moore,2027-06-05,not_started,0,,

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "NG-0001",
+    "run_id": "fd4018df30ef",
+    "recipient_name": "Hana Velasquez-Moore",
+    "recipient_email": "hana.velasquez-moore@brightfutures.example",
+    "program": "ESL",
+    "subject": "Quick update: Adult ESL Pathways",
+    "body": "Hi Hana,\n\nCould you send a 2–3 line reply for Adult ESL Pathways? We’re missing an update this week, and WP-22 Mid-term assessments (due 2026-10-17) and WP-23 Transit pass distribution (due 2026-10-10) are overdue. Please include spend since your last update, percent complete, and any date changes.\n\nThanks,\nJordan Ellery, Operations",
+    "reasons": [
+      "No update from anyone on Adult ESL Pathways since 2026-10-16.",
+      "WP-22 Mid-term assessments was due 2026-10-17 (50% done).",
+      "WP-23 Transit pass distribution was due 2026-10-10 (70% done)."
+    ],
+    "status": "draft",
+    "sent": false,
+    "created_at": "2026-10-26T01:36:46Z"
+  },
+  {
+    "id": "NG-0002",
+    "run_id": "fd4018df30ef",
+    "recipient_name": "Danielle Okonkwo-Reyes",
+    "recipient_email": "danielle.okonkwo-reyes@brightfutures.example",
+    "program": "FAM",
+    "subject": "Quick update: Family Literacy Nights",
+    "body": "Hi Danielle,\n\nCould you send a 2–3 line reply for Family Literacy Nights? WP-15 Family survey analysis is overdue (due 2026-10-09). Please include spend since your last update, percent complete, and any date changes.\n\nThanks,\nJordan Ellery, Operations",
+    "reasons": [
+      "WP-15 Family survey analysis was due 2026-10-09 (40% done)."
+    ],
+    "status": "draft",
+    "sent": false,
+    "created_at": "2026-10-26T01:36:46Z"
+  }
+]

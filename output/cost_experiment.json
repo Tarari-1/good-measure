@@ -1,0 +1,511 @@
+{
+  "pricing": {
+    "placeholders": false,
+    "source": "course slides (gpt-6-luna)",
+    "input_per_mtok": 0.1,
+    "cached_input_per_mtok": 0.01,
+    "cache_write_per_mtok": 0.125,
+    "output_per_mtok": 0.5,
+    "currency": "USD",
+    "cached_is_subset_of_input": true
+  },
+  "runs": [
+    {
+      "label": "A1",
+      "file": "output/final_run_A1.json",
+      "run_id": "45aa319a17eb",
+      "status": "finished",
+      "measures_off": [],
+      "requests": 24,
+      "tool_calls": 78,
+      "input_tokens": 72114,
+      "cached_input_tokens": 39870,
+      "cache_write_tokens": 25930,
+      "output_tokens": 4955,
+      "cached_share": 0.553,
+      "cost_usd": 0.00674885,
+      "per_agent_cost_usd": {
+        "coordinator": 0.00098679,
+        "intake": 0.00343677,
+        "checker": 0.00174903,
+        "chaser": 0.00057628
+      },
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 20,
+        "emails": 20,
+        "false_actions": 0,
+        "false_action_list": [],
+        "missed": [],
+        "wrong_emails": []
+      },
+      "cost_vs_first": 1.0
+    },
+    {
+      "label": "A2",
+      "file": "output/final_run_A2.json",
+      "run_id": "12b4cf82666e",
+      "status": "finished",
+      "measures_off": [],
+      "requests": 24,
+      "tool_calls": 78,
+      "input_tokens": 72122,
+      "cached_input_tokens": 39874,
+      "cache_write_tokens": 25934,
+      "output_tokens": 4947,
+      "cached_share": 0.553,
+      "cost_usd": 0.00674539,
+      "per_agent_cost_usd": {
+        "coordinator": 0.00097733,
+        "intake": 0.00343677,
+        "checker": 0.00174903,
+        "chaser": 0.00058227
+      },
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 20,
+        "emails": 20,
+        "false_actions": 0,
+        "false_action_list": [],
+        "missed": [],
+        "wrong_emails": []
+      },
+      "cost_vs_first": 0.999
+    },
+    {
+      "label": "B1",
+      "file": "output/final_run_B1.json",
+      "run_id": "099c3d66a445",
+      "status": "finished",
+      "measures_off": [
+        "prefilter_emails",
+        "batch_intake",
+        "stable_prompt_prefix"
+      ],
+      "requests": 78,
+      "tool_calls": 72,
+      "input_tokens": 160847,
+      "cached_input_tokens": 120686,
+      "cache_write_tokens": 26938,
+      "output_tokens": 4921,
+      "cached_share": 0.75,
+      "cost_usd": 0.00835691,
+      "per_agent_cost_usd": {
+        "coordinator": 0.0009341,
+        "intake": 0.005278,
+        "checker": 0.00156211,
+        "chaser": 0.0005827
+      },
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 20,
+        "emails": 20,
+        "false_actions": 0,
+        "false_action_list": [],
+        "missed": [],
+        "wrong_emails": []
+      },
+      "cost_vs_first": 1.238
+    },
+    {
+      "label": "B2",
+      "file": "output/final_run_B2.json",
+      "run_id": "bd1866f042c7",
+      "status": "finished",
+      "measures_off": [
+        "prefilter_emails",
+        "batch_intake",
+        "stable_prompt_prefix"
+      ],
+      "requests": 78,
+      "tool_calls": 73,
+      "input_tokens": 161042,
+      "cached_input_tokens": 120737,
+      "cache_write_tokens": 27086,
+      "output_tokens": 5075,
+      "cached_share": 0.75,
+      "cost_usd": 0.00845252,
+      "per_agent_cost_usd": {
+        "coordinator": 0.00098232,
+        "intake": 0.00532595,
+        "checker": 0.00155088,
+        "chaser": 0.00059338
+      },
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_match": 20,
+        "emails": 20,
+        "false_actions": 0,
+        "false_action_list": [],
+        "missed": [],
+        "wrong_emails": []
+      },
+      "cost_vs_first": 1.252
+    }
+  ],
+  "about": "Final runs on the final code (stage 2c), all 20 sample emails, real model. A = all cost measures on; B = prefilter_emails, batch_intake, stable_prompt_prefix off. Order run: B1, A1, B2, A2. Earlier stage-2 runs (output/run_A_all_measures_on.json, output/run_B_measures_off.json) used the code before the e07 prompt fix.",
+  "variance": {
+    "A_cost_usd": {
+      "min": 0.00674539,
+      "max": 0.00674885,
+      "spread": 3.459999999999401e-06
+    },
+    "B_cost_usd": {
+      "min": 0.00835691,
+      "max": 0.00845252,
+      "spread": 9.560999999999945e-05
+    },
+    "A_requests": {
+      "min": 24,
+      "max": 24,
+      "spread": 0
+    },
+    "B_requests": {
+      "min": 78,
+      "max": 78,
+      "spread": 0
+    },
+    "mean_cost_A": 0.0067471200000000005,
+    "mean_cost_B": 0.008404715,
+    "B_over_A_cost_ratio": 1.246,
+    "quality": "all four runs: precision 1.000, recall 1.000, exact 20/20, false actions 0",
+    "conclusion": "Run-to-run variance (A: $0.0000035, B: $0.0000956) is far smaller than the A vs B cost difference ($0.00166, B costs 25% more with 3.25x the requests). Quality did not differ: all four runs scored 20/20."
+  },
+  "last_A_run_per_email": {
+    "run_id": "12b4cf82666e",
+    "emails": [
+      {
+        "email_id": "e01",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0001",
+            "change": "READ-02.spent_to_date -> 1240.5",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed $1,240.50 paid for levelled readers on the books line.",
+        "correct": true
+      },
+      {
+        "email_id": "e02",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0010",
+            "change": "WP-02.status -> complete",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": [
+              "consistency"
+            ]
+          },
+          {
+            "id": "PR-0011",
+            "change": "WP-02.percent_complete -> 100",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed marking WP-02 complete at 100%.",
+        "correct": true
+      },
+      {
+        "email_id": "e03",
+        "expected": "needs_clarification",
+        "outcome": "needs_clarification",
+        "proposals": [],
+        "note": "The $275 supplies receipt covers classroom supplies and family kits, but the email does not split the amount.",
+        "correct": true
+      },
+      {
+        "email_id": "e04",
+        "expected": "needs_clarification",
+        "outcome": "no_matching_row",
+        "proposals": [],
+        "note": "The $600 bouncy-castle and tent rentals do not match an Early Readers budget category.",
+        "correct": true
+      },
+      {
+        "email_id": "e05",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0002",
+            "change": "LIB-01.committed -> 3200.0",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed adding $3,200 as a shelving commitment, not yet paid.",
+        "correct": true
+      },
+      {
+        "email_id": "e06",
+        "expected": "needs_clarification",
+        "outcome": "needs_clarification",
+        "proposals": [],
+        "note": "The $180 purchase covers book-processing supplies and craft supplies, but the email does not split the amount.",
+        "correct": true
+      },
+      {
+        "email_id": "e07",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0013",
+            "change": "WP-07.due_date -> 2026-11-14",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed moving WP-07 due date to 2026-11-14.",
+        "correct": true
+      },
+      {
+        "email_id": "e08",
+        "expected": "quarantine",
+        "outcome": "skipped_quarantined",
+        "proposals": [],
+        "note": "Contains instructions aimed at the AI; quarantined before any model call.",
+        "correct": true
+      },
+      {
+        "email_id": "e09",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0003",
+            "change": "WP-11.status -> complete",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": [
+              "consistency"
+            ]
+          },
+          {
+            "id": "PR-0004",
+            "change": "WP-11.percent_complete -> 100",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed Family Literacy Night #2 as complete and 100% done.",
+        "correct": true
+      },
+      {
+        "email_id": "e10",
+        "expected": "must_be_blocked",
+        "outcome": "needs_clarification",
+        "proposals": [
+          {
+            "id": "PR-0005",
+            "change": "FAM-01.spent_to_date -> 2850.0",
+            "status": "blocked",
+            "blocked_by": [
+              "rules"
+            ],
+            "block_reasons": [
+              "Spent + committed on FAM-01 would be 8,050.00, 50.00 over the 8,000.00 budget, and the proposal has no OVERSPEND flag."
+            ],
+            "warnings": []
+          }
+        ],
+        "note": "The $2,850 catering payment would exceed the FAM-01 budget including existing commitments; the proposal was blocked.",
+        "correct": true
+      },
+      {
+        "email_id": "e11",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0012",
+            "change": "WP-12.due_date -> 2026-12-05",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": [
+              "dependency"
+            ]
+          }
+        ],
+        "note": "Proposed moving WP-12 due date to 2026-12-05; the proposal warns WP-13 is due before this new date.",
+        "correct": true
+      },
+      {
+        "email_id": "e12",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0014",
+            "change": "FAM-02.committed -> 1800.0",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed adding $1,800 to the FAM childcare committed amount.",
+        "correct": true
+      },
+      {
+        "email_id": "e13",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0006",
+            "change": "TEEN-02.spent_to_date -> 780.0",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed adding $780 paid for chapbook printing to TEEN-02.",
+        "correct": true
+      },
+      {
+        "email_id": "e14",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0015",
+            "change": "WP-16.percent_complete -> 60",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed updating WP-16 progress to 60%.",
+        "correct": true
+      },
+      {
+        "email_id": "e15",
+        "expected": "must_be_blocked",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0007",
+            "change": "WP-06.status -> complete",
+            "status": "blocked",
+            "blocked_by": [
+              "permission"
+            ],
+            "block_reasons": [
+              "Marcus Fairweather (TEEN) may only change their own program's rows; WP-06 belongs to LIB."
+            ],
+            "warnings": [
+              "consistency"
+            ]
+          },
+          {
+            "id": "PR-0008",
+            "change": "WP-06.percent_complete -> 100",
+            "status": "blocked",
+            "blocked_by": [
+              "permission"
+            ],
+            "block_reasons": [
+              "Marcus Fairweather (TEEN) may only change their own program's rows; WP-06 belongs to LIB."
+            ],
+            "warnings": []
+          },
+          {
+            "id": "PR-0009",
+            "change": "LIB-06.spent_to_date -> 500.0",
+            "status": "blocked",
+            "blocked_by": [
+              "permission"
+            ],
+            "block_reasons": [
+              "Marcus Fairweather (TEEN) may only change their own program's rows; LIB-06 belongs to LIB."
+            ],
+            "warnings": []
+          }
+        ],
+        "note": "Tried the requested LIB-06 spend and WP-06 completion updates; all were blocked because Marcus may only change TEEN rows.",
+        "correct": true
+      },
+      {
+        "email_id": "e16",
+        "expected": "not_a_tracker_update",
+        "outcome": "skipped_no_tracker_rows",
+        "proposals": [],
+        "note": "Sender's program owns no tracker rows.",
+        "correct": true
+      },
+      {
+        "email_id": "e17",
+        "expected": "not_a_tracker_update",
+        "outcome": "skipped_not_on_roster",
+        "proposals": [],
+        "note": "Sender is not on the staff roster, so no tracker change could be accepted.",
+        "correct": true
+      },
+      {
+        "email_id": "e18",
+        "expected": "not_a_tracker_update",
+        "outcome": "skipped_auto_reply",
+        "proposals": [],
+        "note": "Automatic reply; not a tracker update.",
+        "correct": true
+      },
+      {
+        "email_id": "e19",
+        "expected": "must_be_blocked",
+        "outcome": "skipped_not_on_roster",
+        "proposals": [],
+        "note": "Sender is not on the staff roster, so no tracker change could be accepted.",
+        "correct": true
+      },
+      {
+        "email_id": "e20",
+        "expected": "propose",
+        "outcome": "proposed",
+        "proposals": [
+          {
+            "id": "PR-0016",
+            "change": "WP-18.percent_complete -> 75",
+            "status": "pending",
+            "blocked_by": [],
+            "block_reasons": [],
+            "warnings": []
+          }
+        ],
+        "note": "Proposed updating WP-18 progress to 75%; the November 4 visit booking is not a due-date change.",
+        "correct": true
+      }
+    ]
+  }
+}

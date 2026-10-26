@@ -1,0 +1,265 @@
+{
+  "final_run": {
+    "run_id": "12b4cf82666e",
+    "report": "output/final_run_A2.json",
+    "status": "finished",
+    "per_agent": {
+      "coordinator": {
+        "requests": 5,
+        "tool_calls": 5,
+        "input_tokens": 8946,
+        "cached_input_tokens": 3695,
+        "cache_write_tokens": 3831,
+        "output_tokens": 639,
+        "cost_usd": 0.00097733
+      },
+      "intake": {
+        "requests": 12,
+        "tool_calls": 52,
+        "input_tokens": 42878,
+        "cached_input_tokens": 28719,
+        "cache_write_tokens": 12647,
+        "output_tokens": 2835,
+        "cost_usd": 0.00343677
+      },
+      "checker": {
+        "requests": 4,
+        "tool_calls": 18,
+        "input_tokens": 16962,
+        "cached_input_tokens": 7460,
+        "cache_write_tokens": 8129,
+        "output_tokens": 1042,
+        "cost_usd": 0.00174903
+      },
+      "chaser": {
+        "requests": 3,
+        "tool_calls": 3,
+        "input_tokens": 3336,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 1327,
+        "output_tokens": 431,
+        "cost_usd": 0.00058227
+      }
+    },
+    "total": {
+      "requests": 24,
+      "tool_calls": 78,
+      "input_tokens": 72122,
+      "cached_input_tokens": 39874,
+      "cache_write_tokens": 25934,
+      "output_tokens": 4947,
+      "cost_usd": 0.0067454
+    },
+    "proposals": 16,
+    "blocked": [
+      {
+        "id": "PR-0005",
+        "email": "e10",
+        "row": "FAM-01",
+        "defenses": [
+          "rules"
+        ]
+      },
+      {
+        "id": "PR-0007",
+        "email": "e15",
+        "row": "WP-06",
+        "defenses": [
+          "permission"
+        ]
+      },
+      {
+        "id": "PR-0008",
+        "email": "e15",
+        "row": "WP-06",
+        "defenses": [
+          "permission"
+        ]
+      },
+      {
+        "id": "PR-0009",
+        "email": "e15",
+        "row": "LIB-06",
+        "defenses": [
+          "permission"
+        ]
+      }
+    ],
+    "skipped_before_model": [
+      {
+        "email_id": "e16",
+        "outcome": "skipped_no_tracker_rows",
+        "note": "Sender's program owns no tracker rows."
+      },
+      {
+        "email_id": "e17",
+        "outcome": "skipped_not_on_roster",
+        "note": "Sender is not on the staff roster, so no tracker change could be accepted."
+      },
+      {
+        "email_id": "e08",
+        "outcome": "skipped_quarantined",
+        "note": "Contains instructions aimed at the AI; quarantined before any model call."
+      },
+      {
+        "email_id": "e19",
+        "outcome": "skipped_not_on_roster",
+        "note": "Sender is not on the staff roster, so no tracker change could be accepted."
+      },
+      {
+        "email_id": "e18",
+        "outcome": "skipped_auto_reply",
+        "note": "Automatic reply; not a tracker update."
+      }
+    ],
+    "injection_e08": "quarantined by code before any model call; no proposal",
+    "score": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "exact_match": 20,
+      "emails": 20,
+      "false_actions": 0,
+      "false_action_list": [],
+      "missed": []
+    }
+  },
+  "run1_before_fix": {
+    "run_id": "fd4018df30ef",
+    "score": {
+      "precision": 0.857,
+      "recall": 1.0,
+      "f1": 0.923,
+      "exact_match": 18,
+      "emails": 20,
+      "false_actions": 2,
+      "false_action_list": [
+        "e04: READ-01.spent_to_date -> 600.0",
+        "e20: WP-18.due_date -> 2026-11-04"
+      ],
+      "missed": []
+    },
+    "cost_usd_real_prices": 0.00641605,
+    "cost_note": "run1 did not record cache-write tokens (recording was added in stage 2); cost assumes 0 cache writes, a lower bound.",
+    "cost_if_cache_writes_like_A": 0.0070768
+  },
+  "cost_experiment": [
+    {
+      "label": "A1",
+      "run_id": "45aa319a17eb",
+      "measures_off": [],
+      "requests": 24,
+      "input_tokens": 72114,
+      "cached_input_tokens": 39870,
+      "cache_write_tokens": 25930,
+      "output_tokens": 4955,
+      "cost_usd": 0.00674885,
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "exact_match": 20,
+        "false_actions": 0
+      }
+    },
+    {
+      "label": "A2",
+      "run_id": "12b4cf82666e",
+      "measures_off": [],
+      "requests": 24,
+      "input_tokens": 72122,
+      "cached_input_tokens": 39874,
+      "cache_write_tokens": 25934,
+      "output_tokens": 4947,
+      "cost_usd": 0.00674539,
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "exact_match": 20,
+        "false_actions": 0
+      }
+    },
+    {
+      "label": "B1",
+      "run_id": "099c3d66a445",
+      "measures_off": [
+        "prefilter_emails",
+        "batch_intake",
+        "stable_prompt_prefix"
+      ],
+      "requests": 78,
+      "input_tokens": 160847,
+      "cached_input_tokens": 120686,
+      "cache_write_tokens": 26938,
+      "output_tokens": 4921,
+      "cost_usd": 0.00835691,
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "exact_match": 20,
+        "false_actions": 0
+      }
+    },
+    {
+      "label": "B2",
+      "run_id": "bd1866f042c7",
+      "measures_off": [
+        "prefilter_emails",
+        "batch_intake",
+        "stable_prompt_prefix"
+      ],
+      "requests": 78,
+      "input_tokens": 161042,
+      "cached_input_tokens": 120737,
+      "cache_write_tokens": 27086,
+      "output_tokens": 5075,
+      "cost_usd": 0.00845252,
+      "score": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "exact_match": 20,
+        "false_actions": 0
+      }
+    }
+  ],
+  "pricing": {
+    "placeholders": false,
+    "source": "course slides (gpt-6-luna)",
+    "input_per_mtok": 0.1,
+    "cached_input_per_mtok": 0.01,
+    "cache_write_per_mtok": 0.125,
+    "output_per_mtok": 0.5,
+    "currency": "USD",
+    "cached_is_subset_of_input": true
+  },
+  "variance": {
+    "A_cost_usd": {
+      "min": 0.00674539,
+      "max": 0.00674885,
+      "spread": 3.459999999999401e-06
+    },
+    "B_cost_usd": {
+      "min": 0.00835691,
+      "max": 0.00845252,
+      "spread": 9.560999999999945e-05
+    },
+    "A_requests": {
+      "min": 24,
+      "max": 24,
+      "spread": 0
+    },
+    "B_requests": {
+      "min": 78,
+      "max": 78,
+      "spread": 0
+    },
+    "mean_cost_A": 0.0067471200000000005,
+    "mean_cost_B": 0.008404715,
+    "B_over_A_cost_ratio": 1.246,
+    "quality": "all four runs: precision 1.000, recall 1.000, exact 20/20, false actions 0",
+    "conclusion": "Run-to-run variance (A: $0.0000035, B: $0.0000956) is far smaller than the A vs B cost difference ($0.00166, B costs 25% more with 3.25x the requests). Quality did not differ: all four runs scored 20/20."
+  },
+  "stage2_runs_before_e07_fix": {
+    "A": "output/run_A_all_measures_on.json",
+    "B": "output/run_B_measures_off.json"
+  }
+}

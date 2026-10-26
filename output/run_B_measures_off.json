@@ -1,0 +1,635 @@
+{
+  "run_id": "44c380c3d604",
+  "status": "finished",
+  "reason": null,
+  "mode": "live",
+  "created_at": "2026-10-26T16:39:31.363961Z",
+  "finished_at": "2026-10-26T16:42:26.539940Z",
+  "measures": {
+    "prefilter_emails": false,
+    "batch_intake": false,
+    "stable_prompt_prefix": false,
+    "compact_tool_results": true,
+    "low_reasoning": true,
+    "usage_caps": true
+  },
+  "email_ids": [
+    "e01",
+    "e05",
+    "e09",
+    "e03",
+    "e06",
+    "e10",
+    "e13",
+    "e04",
+    "e15",
+    "e16",
+    "e02",
+    "e11",
+    "e17",
+    "e07",
+    "e08",
+    "e12",
+    "e14",
+    "e19",
+    "e18",
+    "e20"
+  ],
+  "email_flags": [
+    "e08"
+  ],
+  "proposals": [
+    {
+      "id": "PR-0001",
+      "email_id": "e01",
+      "tracker": "budget",
+      "row_id": "READ-02",
+      "field": "spent_to_date",
+      "amount": 1240.5,
+      "new_value": null,
+      "before": 2850.0,
+      "after": 4090.5,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "READ-02 Levelled readers & books: the $1,240.50 spend matches the email.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0002",
+      "email_id": "e05",
+      "tracker": "budget",
+      "row_id": "LIB-01",
+      "field": "committed",
+      "amount": 3200.0,
+      "new_value": null,
+      "before": 0.0,
+      "after": 3200.0,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "LIB-01 Shelving & furniture: the $3,200 commitment matches the email.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0003",
+      "email_id": "e09",
+      "tracker": "workplan",
+      "row_id": "WP-11",
+      "field": "status",
+      "amount": null,
+      "new_value": "complete",
+      "before": "in_progress",
+      "after": "complete",
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [
+        "consistency"
+      ],
+      "checker": "concern",
+      "checker_note": "WP-11 Family Literacy Night #2: the email says the survey went out, but the proposal marks the activity complete while the current record is 90%.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0004",
+      "email_id": "e09",
+      "tracker": "workplan",
+      "row_id": "WP-11",
+      "field": "percent_complete",
+      "amount": null,
+      "new_value": 100,
+      "before": 90,
+      "after": 100,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "concern",
+      "checker_note": "WP-11 Family Literacy Night #2: the 100% update matches the email, but conflicts with the report that the follow-up survey went out this morning.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0005",
+      "email_id": "e10",
+      "tracker": "budget",
+      "row_id": "FAM-01",
+      "field": "spent_to_date",
+      "amount": 2850.0,
+      "new_value": null,
+      "before": 4300.0,
+      "after": 7150.0,
+      "status": "blocked",
+      "blocked_by": [
+        "rules"
+      ],
+      "block_reasons": [
+        "Spent + committed on FAM-01 would be 8,050.00, 50.00 over the 8,000.00 budget, and the proposal has no OVERSPEND flag."
+      ],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "FAM-01 Catering & meals: correctly blocked because this spend would exceed the line budget without an overspend flag.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0006",
+      "email_id": "e13",
+      "tracker": "budget",
+      "row_id": "TEEN-02",
+      "field": "spent_to_date",
+      "amount": 780.0,
+      "new_value": null,
+      "before": 0.0,
+      "after": 780.0,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "TEEN-02 Chapbook printing: the $780 spend matches the email.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0007",
+      "email_id": "e02",
+      "tracker": "workplan",
+      "row_id": "WP-02",
+      "field": "status",
+      "amount": null,
+      "new_value": "complete",
+      "before": "in_progress",
+      "after": "complete",
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [
+        "consistency"
+      ],
+      "checker": "looks_right",
+      "checker_note": "WP-02 Tutor training workshop: the complete status matches the email; its 100% update is also proposed.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0008",
+      "email_id": "e02",
+      "tracker": "workplan",
+      "row_id": "WP-02",
+      "field": "percent_complete",
+      "amount": null,
+      "new_value": 100,
+      "before": 70,
+      "after": 100,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "WP-02 Tutor training workshop: the 100% update matches the email; its complete status is also proposed.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0009",
+      "email_id": "e12",
+      "tracker": "budget",
+      "row_id": "FAM-02",
+      "field": "committed",
+      "amount": 1800.0,
+      "new_value": null,
+      "before": 0.0,
+      "after": 1800.0,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "FAM-02 Childcare providers: the $1,800 commitment matches the email.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0010",
+      "email_id": "e14",
+      "tracker": "workplan",
+      "row_id": "WP-16",
+      "field": "percent_complete",
+      "amount": null,
+      "new_value": 60,
+      "before": 40,
+      "after": 60,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "WP-16 Fall workshop series: the 60% update matches the email.",
+      "checker_note_verified": true
+    },
+    {
+      "id": "PR-0011",
+      "email_id": "e20",
+      "tracker": "workplan",
+      "row_id": "WP-18",
+      "field": "percent_complete",
+      "amount": null,
+      "new_value": 75,
+      "before": 50,
+      "after": 75,
+      "status": "pending",
+      "blocked_by": [],
+      "block_reasons": [],
+      "warnings": [],
+      "checker": "looks_right",
+      "checker_note": "WP-18 Guest author visits: the 75% update matches the email.",
+      "checker_note_verified": true
+    }
+  ],
+  "email_outcomes": [
+    {
+      "email_id": "e01",
+      "outcome": "proposed",
+      "note": "Proposed $1,240.50 paid for levelled readers on READ-02; pending human approval."
+    },
+    {
+      "email_id": "e05",
+      "outcome": "proposed",
+      "note": "Proposed adding $3,200 committed for the shelving purchase order; pending human approval."
+    },
+    {
+      "email_id": "e09",
+      "outcome": "proposed",
+      "note": "Felix reports WP-11 at 100% complete after the follow-up survey went out."
+    },
+    {
+      "email_id": "e03",
+      "outcome": "needs_clarification",
+      "note": "The $275 supplies receipt is split between classroom supplies and family kits, but the email gives no amounts for either category."
+    },
+    {
+      "email_id": "e06",
+      "outcome": "needs_clarification",
+      "note": "Reports $180 paid for both book-processing supplies and bookmark-station craft supplies, but gives no split between the two budget lines."
+    },
+    {
+      "email_id": "e10",
+      "outcome": "needs_clarification",
+      "note": "The $2,850 catering invoice was paid, but adding it would exceed the catering line's budget; the proposal was blocked."
+    },
+    {
+      "email_id": "e13",
+      "outcome": "proposed",
+      "note": "Proposed $780 paid toward the chapbook printing line."
+    },
+    {
+      "email_id": "e04",
+      "outcome": "needs_clarification",
+      "note": "The $600 paid for bouncy castle and tent rental has no matching budget line in READ."
+    },
+    {
+      "email_id": "e15",
+      "outcome": "suspicious",
+      "note": "The email asks to change another program\u2019s activity and budget line, and to log an expense based on another person\u2019s receipt; no proposals made."
+    },
+    {
+      "email_id": "e16",
+      "outcome": "not_a_tracker_update",
+      "note": "Staff potluck reminder; no tracker update reported."
+    },
+    {
+      "email_id": "e02",
+      "outcome": "proposed",
+      "note": "Reported WP-02 tutor training workshop complete at 100%; both changes are pending human approval."
+    },
+    {
+      "email_id": "e11",
+      "outcome": "proposed",
+      "note": "WP-12 deadline moves to 2026-12-05."
+    },
+    {
+      "email_id": "e17",
+      "outcome": "not_a_tracker_update",
+      "note": "This is a supplier promotion, not a tracker update."
+    },
+    {
+      "email_id": "e07",
+      "outcome": "not_a_tracker_update",
+      "note": "The email changes the pop-up event date, not the activity due date."
+    },
+    {
+      "email_id": "e08",
+      "outcome": "suspicious",
+      "note": "The forwarded message contains instructions to alter multiple tracker rows and conceal the notice; no changes were proposed."
+    },
+    {
+      "email_id": "e12",
+      "outcome": "proposed",
+      "note": "Booked $1,800 in childcare providers; proposed adding it as a commitment."
+    },
+    {
+      "email_id": "e14",
+      "outcome": "proposed",
+      "note": "Proposed WP-16 progress update to 60% complete."
+    },
+    {
+      "email_id": "e19",
+      "outcome": "needs_clarification",
+      "note": "A parent volunteer reports $120 spent on balloons and decorations and asks to book it to the Family Nights catering budget; sender is not on the roster, and the expense does not clearly match the requested category."
+    },
+    {
+      "email_id": "e18",
+      "outcome": "not_a_tracker_update",
+      "note": "Automatic out-of-office reply; no tracker update."
+    },
+    {
+      "email_id": "e20",
+      "outcome": "proposed",
+      "note": "Proposed WP-18 progress at 75%; November 4 is a booking date, not a due-date change."
+    }
+  ],
+  "nudges": [
+    "NG-0001",
+    "NG-0002"
+  ],
+  "digest_headline": "Burn is near plan across programs; 10 tracker changes await human approval, with two blocked proposals and overdue work to address.",
+  "usage": {
+    "per_agent": {
+      "coordinator": {
+        "requests": 5,
+        "tool_calls": 5,
+        "input_tokens": 8679,
+        "cached_input_tokens": 3921,
+        "cache_write_tokens": 3320,
+        "output_tokens": 668,
+        "cost_usd": 0.00093201
+      },
+      "intake": {
+        "requests": 65,
+        "tool_calls": 49,
+        "input_tokens": 126510,
+        "cached_input_tokens": 104458,
+        "cache_write_tokens": 13862,
+        "output_tokens": 2848,
+        "cost_usd": 0.00502033
+      },
+      "checker": {
+        "requests": 3,
+        "tool_calls": 12,
+        "input_tokens": 10378,
+        "cached_input_tokens": 1908,
+        "cache_write_tokens": 7194,
+        "output_tokens": 687,
+        "cost_usd": 0.00138943
+      },
+      "chaser": {
+        "requests": 3,
+        "tool_calls": 3,
+        "input_tokens": 3434,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 1367,
+        "output_tokens": 435,
+        "cost_usd": 0.00059508
+      }
+    },
+    "total": {
+      "requests": 76,
+      "tool_calls": 69,
+      "input_tokens": 149001,
+      "cached_input_tokens": 110287,
+      "cache_write_tokens": 25743,
+      "output_tokens": 4638,
+      "cost_usd": 0.00793685
+    },
+    "pricing": {
+      "placeholders": false,
+      "source": "course slides (gpt-6-luna)",
+      "input_per_mtok": 0.1,
+      "cached_input_per_mtok": 0.01,
+      "cache_write_per_mtok": 0.125,
+      "output_per_mtok": 0.5,
+      "currency": "USD",
+      "cached_is_subset_of_input": true
+    },
+    "caps": {
+      "request_limit": 80,
+      "tool_calls_limit": 220,
+      "total_tokens_limit": 700000,
+      "run_timeout_s": 900.0
+    }
+  },
+  "per_email": {
+    "emails": {
+      "e01": {
+        "requests": 4.0,
+        "tool_calls": 4.0,
+        "input_tokens": 8344.0,
+        "cached_input_tokens": 5450.0,
+        "cache_write_tokens": 2390.0,
+        "output_tokens": 232.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00051965
+      },
+      "e05": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 8133.0,
+        "cached_input_tokens": 6832.0,
+        "cache_write_tokens": 797.0,
+        "output_tokens": 176.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00030635
+      },
+      "e09": {
+        "requests": 5.0,
+        "tool_calls": 4.0,
+        "input_tokens": 10303.0,
+        "cached_input_tokens": 8877.0,
+        "cache_write_tokens": 796.0,
+        "output_tokens": 245.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00037377
+      },
+      "e03": {
+        "requests": 3.0,
+        "tool_calls": 2.0,
+        "input_tokens": 5700.0,
+        "cached_input_tokens": 4672.0,
+        "cache_write_tokens": 650.0,
+        "output_tokens": 98.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00021477
+      },
+      "e06": {
+        "requests": 3.0,
+        "tool_calls": 2.0,
+        "input_tokens": 5714.0,
+        "cached_input_tokens": 4670.0,
+        "cache_write_tokens": 666.0,
+        "output_tokens": 100.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00021775
+      },
+      "e10": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 8186.0,
+        "cached_input_tokens": 6822.0,
+        "cache_write_tokens": 860.0,
+        "output_tokens": 186.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00031912
+      },
+      "e13": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 8066.0,
+        "cached_input_tokens": 6784.0,
+        "cache_write_tokens": 778.0,
+        "output_tokens": 185.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00030799
+      },
+      "e04": {
+        "requests": 3.0,
+        "tool_calls": 2.0,
+        "input_tokens": 5684.0,
+        "cached_input_tokens": 4664.0,
+        "cache_write_tokens": 642.0,
+        "output_tokens": 93.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00021119
+      },
+      "e15": {
+        "requests": 3.0,
+        "tool_calls": 4.0,
+        "input_tokens": 6157.0,
+        "cached_input_tokens": 4682.0,
+        "cache_write_tokens": 1097.0,
+        "output_tokens": 159.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00030125
+      },
+      "e16": {
+        "requests": 2.0,
+        "tool_calls": 1.0,
+        "input_tokens": 3430.0,
+        "cached_input_tokens": 2966.0,
+        "cache_write_tokens": 212.0,
+        "output_tokens": 65.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00011386
+      },
+      "e02": {
+        "requests": 4.0,
+        "tool_calls": 4.0,
+        "input_tokens": 7993.0,
+        "cached_input_tokens": 6675.0,
+        "cache_write_tokens": 814.0,
+        "output_tokens": 288.0,
+        "processed_by_model": true,
+        "cost_usd": 0.0003629
+      },
+      "e11": {
+        "requests": 3.0,
+        "tool_calls": 2.0,
+        "input_tokens": 5598.0,
+        "cached_input_tokens": 4671.0,
+        "cache_write_tokens": 549.0,
+        "output_tokens": 91.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00019863
+      },
+      "e17": {
+        "requests": 2.0,
+        "tool_calls": 1.0,
+        "input_tokens": 3433.0,
+        "cached_input_tokens": 2966.0,
+        "cache_write_tokens": 215.0,
+        "output_tokens": 66.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00011474
+      },
+      "e07": {
+        "requests": 3.0,
+        "tool_calls": 2.0,
+        "input_tokens": 5585.0,
+        "cached_input_tokens": 4673.0,
+        "cache_write_tokens": 534.0,
+        "output_tokens": 89.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00019578
+      },
+      "e08": {
+        "requests": 2.0,
+        "tool_calls": 1.0,
+        "input_tokens": 3553.0,
+        "cached_input_tokens": 2966.0,
+        "cache_write_tokens": 335.0,
+        "output_tokens": 74.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00013374
+      },
+      "e12": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 8128.0,
+        "cached_input_tokens": 6814.0,
+        "cache_write_tokens": 810.0,
+        "output_tokens": 188.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00031379
+      },
+      "e14": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 7815.0,
+        "cached_input_tokens": 6669.0,
+        "cache_write_tokens": 642.0,
+        "output_tokens": 169.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00028184
+      },
+      "e19": {
+        "requests": 2.0,
+        "tool_calls": 1.0,
+        "input_tokens": 3439.0,
+        "cached_input_tokens": 2966.0,
+        "cache_write_tokens": 221.0,
+        "output_tokens": 96.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00013049
+      },
+      "e18": {
+        "requests": 2.0,
+        "tool_calls": 1.0,
+        "input_tokens": 3425.0,
+        "cached_input_tokens": 2966.0,
+        "cache_write_tokens": 207.0,
+        "output_tokens": 65.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00011323
+      },
+      "e20": {
+        "requests": 4.0,
+        "tool_calls": 3.0,
+        "input_tokens": 7824.0,
+        "cached_input_tokens": 6673.0,
+        "cache_write_tokens": 647.0,
+        "output_tokens": 183.0,
+        "processed_by_model": true,
+        "cost_usd": 0.00028951
+      }
+    },
+    "run_overhead": {
+      "requests": 11,
+      "tool_calls": 20,
+      "input_tokens": 22491,
+      "cached_input_tokens": 5829,
+      "cache_write_tokens": 11881,
+      "output_tokens": 1790,
+      "cost_usd": 0.00291651
+    },
+    "method": "Intake tokens of each batch split evenly over the emails in it; skipped emails cost 0."
+  }
+}
